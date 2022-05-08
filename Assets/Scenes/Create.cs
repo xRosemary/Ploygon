@@ -24,38 +24,67 @@ public class Create : MonoBehaviour
     static public float width = Screen.width / 2;
     static public float height = Screen.height / 2;
 
-    private float delta = 2 * Mathf.PI;
+    private float delta;
 
     public Text nodeNum;
 
-    static public bool createDone = false;
-
     public Canvas startUI;
+    public Canvas connectUI;
+
+
+    public static int[] vertexVal;
+    public static string[] edgeVal;
+    public MsgControl msgControl;
+
+    public void initGraph()
+    {
+        // 数值初始化---------------------------
+        n = int.Parse(nodeNum.text);
+        vertexVal = new int[n];
+        edgeVal = new string[n];
+        for (int i = 0; i < n; i++)
+        {
+            vertexVal[i] = (int)(Random.Range(-10f, 10f));
+            edgeVal[i] = operator_4[(int)Random.Range(0, 2)];
+        }
+        //---------------------------------------
+        string vertexStr = "";
+        string edgeStr = "";
+        for(int i = 0; i < n; i++)
+        {
+            vertexStr += vertexVal[i] + ",";
+            edgeStr += edgeVal[i] + ",";
+        }
+        if(MsgControl.isConnect == true)
+        {
+            MsgControl.Send("Creat Game:" + vertexStr + "|" + edgeStr);
+        }
+        CreateGraph();
+    }
+
+
     public void CreateGraph()
     {
-        n = int.Parse(nodeNum.text);
-        delta /= n;
+        delta = 2 * Mathf.PI / n;
         float length = new Vector3(Mathf.Cos(delta) * R - R, Mathf.Sin(delta) * R, 0).magnitude;
         edge.transform.localScale = new Vector3(edge.transform.localScale.x, length, 0);
-        //ʵ�����е�
+
         for (int i = n; i >= 1; i--)
         {
             Vector3 circlePos = new Vector3(Mathf.Cos(delta * i) * R, Mathf.Sin(delta * i) * R, 0);
             GameObject circleNode = Instantiate(circle, circlePos, Quaternion.identity);
             GameObject nodeText = circleNode.transform.Find("Canvas/nodeV").gameObject;
 
-            //��ý����Text���
+
             Text nodeValue = nodeText.GetComponent<Text>();
-            int value = (int)(Random.Range(-10f, 10f));
-            //�ڽ��Բ����ʾÿ������ֵ
+            int value = vertexVal[i-1];
+
             nodeValue.text = value.ToString();
             nodeText.transform.position = circlePos;
     
             circleArr.Add(circleNode);
         }
-        createDone = true;
 
-        //ʵ�����б�
         for(int i = n-1; i>=0; i--)
         {
             Vector3 circlePos = new Vector3(Mathf.Cos(delta * i) * R, Mathf.Sin(delta * i) * R, 0);
@@ -64,17 +93,17 @@ public class Create : MonoBehaviour
             GameObject edgeNode = Instantiate(edge, (circlePos + priorPos) / 2,
                 Quaternion.Euler(new Vector3(0, 0, 360 * Mathf.Atan(-(circlePos.x - priorPos.x) / (circlePos.y - priorPos.y)) / (2 * Mathf.PI))));
 
-            //���Gameobject��Text���
             GameObject calcOperator = Instantiate(calcSign, (circlePos + priorPos) / 2, Quaternion.identity);
             GameObject operatorText = calcOperator.transform.Find("Canvas/Operator0").gameObject;
             Text operatorValue = operatorText.GetComponent<Text>();
-            //�漴��ֵ�����������λ���ڱ��м�
-            operatorValue.text =operator_4[(int)Random.Range(0, 2)];
+
+            operatorValue.text = edgeVal[i];
             operatorText.transform.position = edgeNode.transform.position;
             
             edgeArr.Add(edgeNode);
             operatorArr.Add(calcOperator);
         }
         startUI.gameObject.SetActive(false);
+        connectUI.gameObject.SetActive(false);
     }
 }

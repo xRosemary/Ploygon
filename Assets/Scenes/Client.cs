@@ -25,7 +25,10 @@ public class Client : MonoBehaviour
         socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         socket.Connect(ipAddress, 6666);
         StartReceive();
+        MsgControl.isServer = false;
         Send("Connected");
+
+        MsgControl.client = this;
     }
 
     void StartReceive()

@@ -9,7 +9,7 @@ public class Choice : MonoBehaviour
     public Canvas pvpUI;
     public Canvas autoUI;
     public Canvas mainUI;
-
+    public Canvas chatUI;
     public void Solo()
     {
         startUI.gameObject.SetActive(true);
@@ -20,6 +20,7 @@ public class Choice : MonoBehaviour
     {
         pvpUI.gameObject.SetActive(true);
         mainUI.gameObject.SetActive(false);
+        chatUI.gameObject.SetActive(true);
     }
 
     public void AutoShow()

@@ -14,7 +14,8 @@ public class Server : MonoBehaviour
 
     public Text localhost;
     public Message message;
-    void Start()
+    Socket client;
+    public void CreateServer()
     {
         socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         socket.Bind(new IPEndPoint(IPAddress.Any, 6666));
@@ -28,6 +29,7 @@ public class Server : MonoBehaviour
                 break;
             }
         }
+        MsgControl.server = this;
     }
 
     void StartAccept()
@@ -48,11 +50,15 @@ public class Server : MonoBehaviour
     }
     void ReceiveCallback(IAsyncResult asyncResult)
     {
-        Socket client = asyncResult.AsyncState as Socket;
+        client = asyncResult.AsyncState as Socket;
         int len = client.EndReceive(asyncResult);
         if (len == 0) return;
         message.Msg = Encoding.UTF8.GetString(buffer, 0, len);
         StartReceive(client);
+    }
+    public void Send(string msg)
+    {
+        client.Send(Encoding.UTF8.GetBytes(msg));
     }
 
     private void OnDestroy()

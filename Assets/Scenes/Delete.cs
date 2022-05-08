@@ -154,6 +154,10 @@ public class Delete : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        if(MsgControl.isConnect == true)
+        {
+            MsgControl.Send("Delete:" + edgeId);
+        }
         DeleteEdge(edgeId);
     }
 
