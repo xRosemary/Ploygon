@@ -10,11 +10,13 @@ public class Choice : MonoBehaviour
     public Canvas autoUI;
     public Canvas mainUI;
     public Canvas chatUI;
+    public Canvas traceback;
     public void Solo()
     {
         startUI.gameObject.SetActive(true);
 
         mainUI.gameObject.SetActive(false);
+        traceback.gameObject.SetActive(true);
     }
     public void PVP()
     {

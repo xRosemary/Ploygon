@@ -16,19 +16,17 @@ public class Backtrack : MonoBehaviour
         if(stack.Count > 0)
         {
             Tuple<List<int>, List<string>> t = stack.Pop();
-            Create.vertexVal = t.Item1;
-            Create.edgeVal = t.Item2;
-            Create.n = Create.vertexVal.Count;
-            Create.m = Create.edgeVal.Count;
+            
             GameObject[] obj = GameObject.FindGameObjectsWithTag("Graph");
 
             Create.circleArr = new List<GameObject>();
             Create.edgeArr = new List<GameObject>();
             Create.operatorArr = new List<GameObject>();
 
-
-
-
+            Create.vertexVal = t.Item1;
+            Create.edgeVal = t.Item2;
+            Create.n = Create.vertexVal.Count;
+            Create.m = Create.edgeVal.Count;
 
             foreach (GameObject go in obj)
             {
