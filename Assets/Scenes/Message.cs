@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -54,26 +55,26 @@ public class Message : MonoBehaviour
         {
             chatText.text += "\n" + msg;
             hasMsg = false;
-            if (msg.Contains("Creat Game:"))
+            if (msg.Contains("Create Game:"))
             {
-                
-                string subStr = msg.Substring(msg.IndexOf(':')+1);
-                string vertexStr = subStr.Substring(0,subStr.IndexOf('|')-1);
-                string edgeStr = subStr.Substring(subStr.IndexOf('|')+1, subStr.LastIndexOf(',') - subStr.IndexOf('|')-1);
-                
+
+                string subStr = msg.Substring(msg.IndexOf(':') + 1);
+                string vertexStr = subStr.Substring(0, subStr.IndexOf('|') - 1);
+                string edgeStr = subStr.Substring(subStr.IndexOf('|') + 1, subStr.LastIndexOf(',') - subStr.IndexOf('|') - 1);
+
                 string[] vertex = vertexStr.Split(',');
                 int[] vertexVal = Array.ConvertAll<string, int>(vertex, int.Parse);
 
                 string[] edgeVal = edgeStr.Split(',');
 
+                List<int> vertexList = new List<int>(vertexVal);
+                List<string> edgeList = new List<string>(edgeVal);
 
-                for(int i = 0; i < vertexVal.Length; i++)
-                {
-                    Create.vertexVal = vertexVal;
-                    Create.edgeVal = edgeVal;
-                }
+                Create.vertexVal = vertexList;
+                Create.edgeVal = edgeList;
+
                 Create.n = vertexVal.Length;
-
+                Create.m = edgeVal.Length;
                 create.CreateGraph();
             }
 
@@ -82,6 +83,29 @@ public class Message : MonoBehaviour
                 string subStr = msg.Substring(msg.IndexOf(':') + 1);
                 int edgeID = int.Parse(subStr);
                 Delete.DeleteEdge(edgeID);
+            }
+
+            if (msg.Contains("Backtrack:"))
+            {
+
+                string subStr = msg.Substring(msg.IndexOf(':') + 1);
+                string vertexStr = subStr.Substring(0, subStr.IndexOf('|') - 1);
+                string edgeStr = subStr.Substring(subStr.IndexOf('|') + 1, subStr.LastIndexOf(',') - subStr.IndexOf('|') - 1);
+
+                string[] vertex = vertexStr.Split(',');
+                int[] vertexVal = Array.ConvertAll<string, int>(vertex, int.Parse);
+
+                string[] edgeVal = edgeStr.Split(',');
+
+                List<int> vertexList = new List<int>(vertexVal);
+                List<string> edgeList = new List<string>(edgeVal);
+
+                Create.vertexVal = vertexList;
+                Create.edgeVal = edgeList;
+
+                Create.n = vertexVal.Length;
+                Create.m = edgeVal.Length;
+                create.CreateGraph();
             }
         }
     }

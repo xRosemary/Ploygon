@@ -40,11 +40,13 @@ public class Delete : MonoBehaviour
 
             Create.operatorArr[index].SetActive(false);
             Create.operatorArr.RemoveAt(index);
-
+            Create.edgeVal.RemoveAt(index);
             for (int i = 0; i < index + 1; i++)
             {
                 Create.circleArr.Add(Create.circleArr[0]);
                 Create.circleArr.RemoveAt(0);
+                Create.vertexVal.Add(Create.vertexVal[0]);
+                Create.vertexVal.RemoveAt(0);
             }
             for (int i = 0; i < index; i++)
             {
@@ -52,6 +54,8 @@ public class Delete : MonoBehaviour
                 Create.edgeArr.RemoveAt(0);
                 Create.operatorArr.Add(Create.operatorArr[0]);
                 Create.operatorArr.RemoveAt(0);
+                Create.edgeVal.Add(Create.edgeVal[0]);
+                Create.edgeVal.RemoveAt(0);
             }
         }
         else
@@ -82,10 +86,12 @@ public class Delete : MonoBehaviour
             {
                 case 0:
                     nodeValue1.text = (int.Parse(nodeValue1.text) + int.Parse(nodeValue2.text)).ToString();
+                    Create.vertexVal[index] = Create.vertexVal[index] + Create.vertexVal[index + 1];
                     break;
 
                 case 1:
                     nodeValue1.text = (int.Parse(nodeValue1.text) * int.Parse(nodeValue2.text)).ToString();
+                    Create.vertexVal[index] = Create.vertexVal[index] * Create.vertexVal[index + 1];
                     break;
 
                 default:
@@ -94,10 +100,10 @@ public class Delete : MonoBehaviour
 
             Create.operatorArr[index].SetActive(false);
             Create.operatorArr.RemoveAt(index);
-
+            Create.edgeVal.RemoveAt(index);
             nodeText1.transform.position = Create.circleArr[index].transform.position;
             Create.circleArr.RemoveAt(index + 1);
-
+            Create.vertexVal.RemoveAt(index + 1);
             float length;
             float length2;
 
@@ -154,6 +160,8 @@ public class Delete : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        Backtrack.Push(Create.vertexVal, Create.edgeVal);
+
         if(MsgControl.isConnect == true)
         {
             MsgControl.Send("Delete:" + edgeId);

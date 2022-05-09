@@ -14,6 +14,7 @@ public class Create : MonoBehaviour
     static public int edgeId = -1;
     static public bool isDeleted = false;
     static public int n;
+    static public int m;
     static public int clickTime = 0;
 
     public GameObject circle;
@@ -32,22 +33,27 @@ public class Create : MonoBehaviour
     public Canvas connectUI;
 
 
-    public static int[] vertexVal;
-    public static string[] edgeVal;
-    public MsgControl msgControl;
-
+    public static List<int> vertexVal;
+    public static List<string> edgeVal;
+    public MsgControl msgControl; 
+    private void Start()
+    {
+        Backtrack.create = this;
+    }
     public void initGraph()
     {
         // 数值初始化---------------------------
         n = int.Parse(nodeNum.text);
-        vertexVal = new int[n];
-        edgeVal = new string[n];
+        m = n;
+        vertexVal = new List<int>();
+        edgeVal = new List<string>();
         for (int i = 0; i < n; i++)
         {
-            vertexVal[i] = (int)(Random.Range(-10f, 10f));
-            edgeVal[i] = operator_4[(int)Random.Range(0, 2)];
+            vertexVal.Add((int)(Random.Range(-10f, 10f)));
+            edgeVal.Add(operator_4[(int)Random.Range(0, 2)]);
         }
         //---------------------------------------
+
         string vertexStr = "";
         string edgeStr = "";
         for(int i = 0; i < n; i++)
@@ -57,8 +63,9 @@ public class Create : MonoBehaviour
         }
         if(MsgControl.isConnect == true)
         {
-            MsgControl.Send("Creat Game:" + vertexStr + "|" + edgeStr);
+            MsgControl.Send("Create Game:" + vertexStr + "|" + edgeStr);
         }
+        
         CreateGraph();
     }
 
@@ -85,7 +92,7 @@ public class Create : MonoBehaviour
             circleArr.Add(circleNode);
         }
 
-        for(int i = n-1; i>=0; i--)
+        for(int i = m-1; i>=0; i--)
         {
             Vector3 circlePos = new Vector3(Mathf.Cos(delta * i) * R, Mathf.Sin(delta * i) * R, 0);
             Vector3 priorPos = new Vector3(Mathf.Cos(delta * (i + 1)) * R, Mathf.Sin(delta * (i + 1)) * R, 0);
