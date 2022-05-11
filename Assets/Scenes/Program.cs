@@ -26,11 +26,56 @@ public class Program : MonoBehaviour
 
         for (int i = 0; i < n; i++)
         {
-            v[i] = int.Parse(Create.circleArr[i].transform.Find("Canvas/nodeV").gameObject.GetComponent<Text>().text);
-            s[i] = Create.operatorArr[i].transform.Find("Canvas/Operator0").gameObject.GetComponent<Text>().text[0];
+            v[i] = Create.vertexVal[i];
+            s[i] = Create.edgeVal[i][0];
         }
+        string str = "";
+        foreach (int i in v)
+        {
+            str += i + ",";
+        }
+        Debug.Log(str);
+        str = "";
+        foreach (char i in s)
+        {
+            str += i + ",";
+        }
+        Debug.Log(str);
 
         ans = run(v, s);
+
+        str = "";
+        foreach (int i in ans)
+        {
+            str += i + ",";
+        }
+        Debug.Log(str);
+
+
+
+        Delete.DeleteEdge(ans[0]);
+
+        int head = 0;
+        for (int i = 1; i < n; i++)
+        {
+            if(ans[i] < ans[0])
+            {
+                ans[i] += 1000;
+            }
+            else if(ans[i] > ans[0])
+            {
+                ans[i] = ans[i] - ans[0] - 1;
+                head++;
+            }
+        }
+
+        for (int i = 1; i < n; i++)
+        {
+            if (ans[i] >= 1000)
+            {
+                ans[i] = ans[i] - 1000 + head;
+            }
+        }
     }
 
     private void Update()
@@ -38,7 +83,11 @@ public class Program : MonoBehaviour
         if(time > 2 && count < n)
         {
             time = 0;
-
+            if (count == 0)
+            {
+                count++;
+                return;
+            }
             Delete.DeleteEdge(ans[count]);
             for (int i = 0; i < ans.Length; i++)
             {
@@ -95,11 +144,12 @@ public class Program : MonoBehaviour
                 maxline = i;
             }
         }
-        // if(maxline==0){
-        //     Console.WriteLine("最优值为"+ maxn +",删除"+ maxline+n +"号边得到" + "\n");
-        // }
-        // else
-        //     Console.WriteLine("最优值为"+ maxn +",删除" + maxline +"号边得到\n");
+        if (maxline == 0)
+        {
+            Debug.Log("最优值为" + maxn + ",删除" + (maxline + n) + "号边得到" + "\n");
+        }
+        else
+            Debug.Log("最优值为" + maxn + ",删除" + maxline + "号边得到\n");
         // for(int i = 0; i < 2*n; i++){
         //     for(int j = 0; j < 2*n; j++){
         //         Console.Write(dp[i, j, 0]+"\t");

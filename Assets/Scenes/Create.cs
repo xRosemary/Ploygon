@@ -65,13 +65,15 @@ public class Create : MonoBehaviour
         {
             MsgControl.Send("Create Game:" + vertexStr + "|" + edgeStr);
         }
-        
+
         CreateGraph();
     }
 
 
     public void CreateGraph()
     {
+        vertexVal.Reverse();
+        //edgeVal.Reverse();
         delta = 2 * Mathf.PI / n;
         float length = new Vector3(Mathf.Cos(delta) * R - R, Mathf.Sin(delta) * R, 0).magnitude;
         edge.transform.localScale = new Vector3(edge.transform.localScale.x, length, 0);
@@ -92,10 +94,10 @@ public class Create : MonoBehaviour
             circleArr.Add(circleNode);
         }
 
-        for(int i = m-1; i>=0; i--)
+        for(int i = 0; i<m;i++)
         {
-            Vector3 circlePos = new Vector3(Mathf.Cos(delta * i) * R, Mathf.Sin(delta * i) * R, 0);
-            Vector3 priorPos = new Vector3(Mathf.Cos(delta * (i + 1)) * R, Mathf.Sin(delta * (i + 1)) * R, 0);
+            Vector3 circlePos = new Vector3(Mathf.Cos(-delta * i) * R, Mathf.Sin(-delta * i) * R, 0);
+            Vector3 priorPos = new Vector3(Mathf.Cos(-delta * (i+1)) * R, Mathf.Sin(-delta * (i+1)) * R, 0);
 
             GameObject edgeNode = Instantiate(edge, (circlePos + priorPos) / 2,
                 Quaternion.Euler(new Vector3(0, 0, 360 * Mathf.Atan(-(circlePos.x - priorPos.x) / (circlePos.y - priorPos.y)) / (2 * Mathf.PI))));
@@ -112,5 +114,7 @@ public class Create : MonoBehaviour
         }
         startUI.gameObject.SetActive(false);
         connectUI.gameObject.SetActive(false);
+        vertexVal.Reverse();
+        //edgeVal.Reverse();
     }
 }

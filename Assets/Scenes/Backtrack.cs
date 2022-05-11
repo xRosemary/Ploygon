@@ -32,6 +32,7 @@ public class Backtrack : MonoBehaviour
             {
                 Destroy(go);
             }
+            
             if(stack.Count == 0)
             {
                 Create.clickTime = 0;
@@ -44,6 +45,20 @@ public class Backtrack : MonoBehaviour
     {
         List<int> vCopy = new List<int>(vertex);
         List<string> eCopy = new List<string>(edge);
+        string str = "";
+        foreach(int i in vCopy)
+        {
+            str += i.ToString() + ",";
+        }
+        Debug.Log(str);
+        str = "";
+        foreach (string i in eCopy)
+        {
+            str += i.ToString() + ",";
+        }
+        Debug.Log(str);
+
+
         Tuple<List<int>, List<string>> t = Tuple.Create(vCopy, eCopy);
 
         stack.Push(t);

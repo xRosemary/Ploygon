@@ -7,7 +7,7 @@ public class Delete : MonoBehaviour
 {
     SpriteRenderer edgeRender;
     private static float x_scale=10;
-    private int edgeId;
+    public int edgeId;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +32,7 @@ public class Delete : MonoBehaviour
     }
     public static void DeleteEdge(int index)
     {
+
         Create.clickTime++;
         if (Create.clickTime == 1)
         {
@@ -160,11 +161,15 @@ public class Delete : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        Backtrack.Push(Create.vertexVal, Create.edgeVal);
+        
 
         if(MsgControl.isConnect == true)
         {
             MsgControl.Send("Delete:" + edgeId);
+        }
+        else
+        {
+            Backtrack.Push(Create.vertexVal, Create.edgeVal);
         }
         DeleteEdge(edgeId);
     }
